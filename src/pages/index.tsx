@@ -1,4 +1,25 @@
+import { Button } from '@/components/Elements';
+import { getServerAuthSession } from '@/server/auth';
+import { GetServerSidePropsContext } from 'next';
+import { signOut } from 'next-auth/react';
 import Head from 'next/head';
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerAuthSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 export default function Home() {
   return (
@@ -9,8 +30,14 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <p className="text-red-500">chuwow</p>
+      <main className="min-h-screen min-w-screen flex items-center justify-center">
+        <div className="p-4 bg-gray-100 max-w-md flex-1">
+          <p>CC Expense Tracker</p>
+
+          <div className="flex gap-2">
+            <Button onClick={() => signOut({ callbackUrl: '/login' })}>Logout</Button>
+          </div>
+        </div>
       </main>
     </>
   );
