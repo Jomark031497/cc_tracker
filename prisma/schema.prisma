@@ -10,6 +10,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Card {
+  id           String        @id @default(cuid())
+  name         String        @unique @db.VarChar(255)
+  imageUrl     String?       @map("image_url")
+  createdAt    DateTime      @default(now()) @map("created_at")
+  updatedAt    DateTime      @updatedAt @map("updated_at")
+  transactions Transaction[]
+
+  @@index([id])
+  @@map("cards")
+}
+
+model Transaction {
+  id        String   @id @default(cuid())
+  name      String   @unique @db.VarChar(255)
+  amount    Float    @default(0)
+  date      DateTime @default(now())
+  imageUrl  String?  @map("image_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  Card      Card?    @relation(fields: [cardId], references: [id])
+  cardId    String?
+
+  @@index([id])
+  @@map("transactions")
+}
+
+// Authentication
+
 model Account {
   id                String  @id @default(cuid())
   userId            String  @map("user_id")
