@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "cards" ADD COLUMN     "credit_limit" DOUBLE PRECISION NOT NULL DEFAULT 0;

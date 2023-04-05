@@ -1,17 +1,23 @@
-import { Button } from '@/components/Elements';
 import { RiVisaLine, RiMastercardLine } from 'react-icons/ri';
 // import { SiJcb, SiAmericanexpress } from 'react-icons/si';
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
+import { useModal } from '@/hooks/useModal';
+import { CreateCard, useCards } from '@/features/cards';
+import { formatToCurrency } from '@/utils/formatToCurrency';
 
 export default function Home() {
   const { data: sessionData } = useSession();
+
+  const { data: cards } = useCards();
+
+  const { close, isOpen, open } = useModal();
 
   if (!sessionData) {
     <>
       <p>Not authenticated!</p>
       <div className="flex gap-2 my-8">
-        <Button onClick={() => signOut({ callbackUrl: '/login' })}>Logout</Button>
+        <button onClick={() => signOut({ callbackUrl: '/login' })}>Logout</button>
       </div>
     </>;
   }
@@ -28,45 +34,46 @@ export default function Home() {
           <section className="flex flex-col gap-4">
             <div className="flex justify-between items-center">
               <p>Your Cards:</p>
-              <button className="bg-primary-main text-white text-sm py-2 rounded-full px-6 font-bold hover:bg-primary-dark transition-all">
+              <button
+                onClick={() => open()}
+                className="bg-primary-main text-white text-sm py-2 rounded-full px-6 font-bold hover:bg-primary-dark transition-all"
+              >
                 Add Card
               </button>
             </div>
-            <div className="px-2 py-4 rounded-xl bg-orange-200 shadow-xl grid grid-cols-2 gap-0 hover:bg-orange-300 transition-all">
-              <div className="flex items-center gap-2 col-span-2">
-                <RiVisaLine className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
-                <div>
-                  <p className="font-semibold mb-1 text-sm">Unionbank Classic Credit Card</p>
-                  <p className="text-xs">
-                    Available Credit: <strong>PHP 10,461.02</strong>
-                  </p>
+
+            <div className="flex flex-col gap-4">
+              {cards?.map((card) => (
+                <div
+                  key={card.id}
+                  className="px-2 py-4 rounded-xl bg-orange-200 shadow-xl grid grid-cols-2 gap-0 hover:bg-orange-300 transition-all"
+                >
+                  <div className="flex items-center gap-2 col-span-2">
+                    {card.network === 'VISA' && (
+                      <RiVisaLine className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
+                    )}
+                    {card.network === 'MASTERCARD' && (
+                      <RiMastercardLine className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
+                    )}
+                    <div>
+                      <p className="font-semibold mb-1 text-sm">{card.name}</p>
+                      <p className="text-xs">
+                        Available Credit: <strong>{formatToCurrency(card.creditLimit)}</strong>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="col-span-2 text-right justify-self-end">
+                    <p className="text-xs">Outstanding Balance</p>
+                    <p className="text-lg font-bold">{formatToCurrency(78967)}</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="col-span-2 text-right justify-self-end">
-                <p className="text-xs">Outstanding Balance</p>
-                <p className="text-lg font-bold">PHP 7896.67</p>
-              </div>
-            </div>
-
-            <div className="px-2 py-4 rounded-xl bg-orange-200 shadow-xl grid grid-cols-2 gap-0">
-              <div className="flex items-center gap-2 col-span-2">
-                <RiMastercardLine className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
-                <div>
-                  <p className="font-semibold mb-1 text-sm">BPI Amore Cashback Credit Card</p>
-                  <p className="text-xs">
-                    Available Credit: <strong>PHP 10,461.02</strong>
-                  </p>
-                </div>
-              </div>
-
-              <div className="col-span-2 text-right justify-self-end">
-                <p className="text-xs">Outstanding Balance</p>
-                <p className="text-lg font-bold">PHP 7896.67</p>
-              </div>
+              ))}
             </div>
           </section>
         </div>
+
+        <CreateCard isOpen={isOpen} close={close} />
       </>
     </>
   );

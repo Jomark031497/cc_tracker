@@ -1,28 +1,19 @@
-import { Button } from '@/components/Elements';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  CreateCardSchema,
+  ICreateCardInputs,
+  PAYMENT_NETWORKS,
+  createCardApi,
+} from '@/features/cards';
+import { InputField, Modal, SelectField } from '@/components/Elements';
 
-const CreateCardSchema = z.object({
-  name: z
-    .string({
-      invalid_type_error: 'Please enter a valid Card Name',
-      required_error: 'Please enter a Card Name',
-    })
-    .min(6, 'Card Name must be atleast 6 characters long')
-    .max(255, 'Card Name must only be up to 255 characters'),
-  imageUrl: z
-    .string({
-      invalid_type_error: 'Please enter a valid Image Url',
-      required_error: 'Please enter a Image Url',
-    })
-    .url('Please enter a valid URL')
-    .optional(),
-});
+interface Props {
+  isOpen: boolean;
+  close: () => void;
+}
 
-type ICreateCardInputs = z.infer<typeof CreateCardSchema>;
-
-export const CreateCard = () => {
+export const CreateCard = ({ isOpen, close }: Props) => {
   const {
     register,
     handleSubmit,
@@ -32,28 +23,56 @@ export const CreateCard = () => {
   });
 
   const onSubmit: SubmitHandler<ICreateCardInputs> = async (values) => {
-    console.log(values);
+    try {
+      await createCardApi(values);
+      console.log('card creation success');
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  console.log(errors.name);
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label className="text-gray-700 text-sm font-bold mb-2 flex flex-col gap-1">
-          Name
-          <input
-            className="appearance-none border border-gray-300 rounded-xl w-full py-3 px-3 text-gray-700 leading-tight transition ease-in-out focus:border-primary-main focus:outline-none focus:shadow-outline"
-            type="name" 
+      <Modal isOpen={isOpen} onClose={close} title="Create Card" size="max-w-sm">
+        <form onSubmit={handleSubmit(onSubmit)} className="p-4 grid grid-cols-3">
+          <InputField
+            label="Card Name"
             {...register('name')}
+            formError={errors.name}
+            className="col-span-3"
           />
-        </label>
-        {errors.name && <p className="text-red-500">{errors.name.message}</p>}
 
-        <Button type="submit" disabled={isSubmitting}>
-          Create
-        </Button>
-      </form>
+          <SelectField
+            label="Payment Network"
+            {...register('network')}
+            formError={errors.network}
+            className="col-span-2"
+          >
+            {PAYMENT_NETWORKS.map((network) => (
+              <option key={network} value={network}>
+                {network}
+              </option>
+            ))}
+          </SelectField>
+
+          <InputField
+            label="Credit Limit"
+            {...register('creditLimit', {
+              valueAsNumber: true,
+            })}
+            formError={errors.creditLimit}
+            className="col-span-2"
+          />
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="p-2 rounded-lg col-span-3 transition-all shadow-xl bg-primary-main text-white font-semibold hover:bg-primary-dark"
+          >
+            Create
+          </button>
+        </form>
+      </Modal>
     </>
   );
 };
