@@ -4,6 +4,7 @@ import DiscordProvider from 'next-auth/providers/discord';
 import EmailProvider from 'next-auth/providers/email';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '@/server/db';
+import { StaticImageData } from 'next/image';
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -17,6 +18,7 @@ declare module 'next-auth' {
       id: string;
       // ...other properties
       // role: UserRole;
+      image: StaticImageData | string;
     } & DefaultSession['user'];
   }
 

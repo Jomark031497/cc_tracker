@@ -2,7 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   eslint: {
-    dirs: ["src"],
+    dirs: ['src'],
+  },
+  images: {
+    domains: ['cdn.discordapp.com'],
   },
 };
 
