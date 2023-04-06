@@ -11,19 +11,8 @@ import { IoMdAdd } from 'react-icons/io';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
-
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/login',
-        permanent: false,
-      },
-    };
-  }
-
-  return {
-    props: {},
-  };
+  if (!session) return { redirect: { destination: '/login', permanent: false } };
+  return { props: {} };
 };
 
 const networkIcons = {

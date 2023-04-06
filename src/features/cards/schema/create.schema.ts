@@ -13,7 +13,6 @@ export const CreateCardSchema = z.object({
   network: z.enum(PAYMENT_NETWORKS),
   creditLimit: z.number().nonnegative(),
   date: z.date().optional(),
-  imageUrl: z.string().url().optional(),
 });
 
 export type ICreateCardInputs = z.infer<typeof CreateCardSchema>;
