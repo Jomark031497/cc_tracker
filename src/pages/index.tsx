@@ -1,12 +1,13 @@
 import { RiVisaLine, RiMastercardLine } from 'react-icons/ri';
-// import { SiJcb, SiAmericanexpress } from 'react-icons/si';
-import { signOut, useSession } from 'next-auth/react';
+import { SiJcb, SiAmericanexpress } from 'react-icons/si';
 import Head from 'next/head';
 import { useModal } from '@/hooks/useModal';
-import { CreateCard, useCards } from '@/features/cards';
-import { formatToCurrency } from '@/utils/formatToCurrency';
+import { Card, CreateCard, useCards } from '@/features/cards';
 import { getServerAuthSession } from '@/server/auth';
 import { GetServerSidePropsContext } from 'next';
+import { Menu, Transition } from '@headlessui/react';
+import { Fragment } from 'react';
+import { IoMdAdd } from 'react-icons/io';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
@@ -25,19 +26,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   };
 };
 
+const networkIcons = {
+  VISA: RiVisaLine,
+  MASTERCARD: RiMastercardLine,
+  JCB: SiJcb,
+  AMERICAN_EXPRESS: SiAmericanexpress,
+  DINERS_CLUB: SiAmericanexpress,
+};
+
 export default function Home() {
-  const { data: sessionData } = useSession();
   const { data: cards } = useCards();
   const { close, isOpen, open } = useModal();
 
-  if (!sessionData) {
-    <>
-      <p>Not authenticated!</p>
-      <div className="flex gap-2 my-8">
-        <button onClick={() => signOut({ callbackUrl: '/login' })}>Logout</button>
-      </div>
-    </>;
-  }
   return (
     <>
       <Head>
@@ -47,51 +47,62 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <>
-        <div>
-          <section className="flex flex-col gap-4">
-            <div className="flex justify-between items-center">
-              <p>Your Cards:</p>
-              <button
-                onClick={() => open()}
-                className="bg-primary-main text-white text-sm py-2 rounded-full px-6 font-bold hover:bg-primary-dark transition-all"
+        <section className="flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <p className="font-bold">Your Cards:</p>
+            <Menu as="div" className="relative inline-block text-left">
+              <Menu.Button className="flex items-center justify-center text-sm text-primary-main hover:bg-primary-main transition-all hover:text-white py-2 px-4 rounded-md font-semibold border border-primary-main">
+                Manage
+              </Menu.Button>
+
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
               >
-                Add Card
-              </button>
-            </div>
+                <Menu.Items className="absolute mt-1 right-0 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="px-1 py-1">
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          onClick={() => open()}
+                          className={`${
+                            active ? 'bg-primary-main text-white' : 'text-gray-500'
+                          } group flex w-full items-center transition-all rounded-md px-2 py-2 text-sm`}
+                        >
+                          <IoMdAdd className="text-lg mr-1" />
+                          Add Card
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </div>
+                </Menu.Items>
+              </Transition>
+            </Menu>
+          </div>
 
-            <div className="flex flex-col gap-4">
-              {cards?.map((card) => (
-                <div
+          <div className="flex flex-col gap-2">
+            {cards?.map((card) => {
+              const IconComponent = networkIcons[card.network];
+              return (
+                <Card
                   key={card.id}
-                  className="px-2 py-4 rounded-xl bg-orange-200 shadow-xl grid grid-cols-2 gap-0 hover:bg-orange-300 transition-all"
-                >
-                  <div className="flex items-center gap-2 col-span-2">
-                    {card.network === 'VISA' && (
-                      <RiVisaLine className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
-                    )}
-                    {card.network === 'MASTERCARD' && (
-                      <RiMastercardLine className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
-                    )}
-                    <div>
-                      <p className="font-semibold mb-1 text-sm">{card.name}</p>
-                      <p className="text-xs">
-                        Available Credit: <strong>{formatToCurrency(card.creditLimit)}</strong>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="col-span-2 text-right justify-self-end">
-                    <p className="text-xs">Outstanding Balance</p>
-                    <p className="text-lg font-bold">{formatToCurrency(78967)}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
-
-        <CreateCard isOpen={isOpen} close={close} />
+                  card={card}
+                  icon={
+                    <IconComponent className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
+                  }
+                />
+              );
+            })}
+          </div>
+        </section>
       </>
+
+      <CreateCard isOpen={isOpen} close={close} />
     </>
   );
 }

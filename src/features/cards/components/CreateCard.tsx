@@ -7,6 +7,8 @@ import {
   createCardApi,
 } from '@/features/cards';
 import { InputField, Modal, SelectField } from '@/components/Elements';
+import { toast } from 'react-toastify';
+import { queryClient } from '@/lib/queryClient';
 
 interface Props {
   isOpen: boolean;
@@ -25,8 +27,11 @@ export const CreateCard = ({ isOpen, close }: Props) => {
   const onSubmit: SubmitHandler<ICreateCardInputs> = async (values) => {
     try {
       await createCardApi(values);
+      queryClient.invalidateQueries(['cards']);
+      toast.success('Card created successfully.');
+      close();
     } catch (error) {
-      console.error(error);
+      toast.error('Card creation failed.');
     }
   };
 
