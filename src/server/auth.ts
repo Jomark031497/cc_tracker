@@ -34,6 +34,7 @@ declare module 'next-auth' {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  secret: process.env.SECRET,
   callbacks: {
     session({ session, user }) {
       if (session.user) {
