@@ -25,7 +25,6 @@ export const CreateCard = ({ isOpen, close }: Props) => {
   const onSubmit: SubmitHandler<ICreateCardInputs> = async (values) => {
     try {
       await createCardApi(values);
-      console.log('card creation success');
     } catch (error) {
       console.error(error);
     }
