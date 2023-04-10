@@ -38,7 +38,7 @@ export const CreateCard = ({ isOpen, close }: Props) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={close} title="Create Card" size="max-w-sm">
-        <form onSubmit={handleSubmit(onSubmit)} className="p-4 grid grid-cols-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-3 p-4">
           <InputField
             label="Card Name"
             {...register('name')}

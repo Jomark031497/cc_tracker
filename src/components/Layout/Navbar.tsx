@@ -11,7 +11,7 @@ export const Navbar = () => {
   return (
     <header className="bg-gray-200 py-2 px-4 h-[70px] flex items-center justify-between">
       <Link href="/" className="text-primary-main font-bold text-2xl hover:text-primary-dark">
-        CC Tracker
+        CC
       </Link>
 
       {sessionData ? (

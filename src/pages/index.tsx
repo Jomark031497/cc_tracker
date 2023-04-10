@@ -8,6 +8,9 @@ import { GetServerSidePropsContext } from 'next';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { IoMdAdd } from 'react-icons/io';
+import { CreateTransaction, useTransactions } from '@/features/transactions';
+import { format } from 'date-fns';
+import { formatToCurrency } from '@/utils/formatToCurrency';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
@@ -25,7 +28,15 @@ const networkIcons = {
 
 export default function Home() {
   const { data: cards } = useCards();
-  const { close, isOpen, open } = useModal();
+
+  const { data: transactions } = useTransactions();
+
+  const { close: closeCardModal, isOpen: isCardModalOpen, open: openCardModal } = useModal();
+  const {
+    close: closeTransactionModal,
+    isOpen: isTransactionModalOpen,
+    open: openTransactionModal,
+  } = useModal();
 
   return (
     <>
@@ -36,9 +47,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <>
-        <section className="flex flex-col gap-4">
+        <section className="flex flex-col gap-4 mb-8">
           <div className="flex justify-between items-center">
-            <p className="font-bold">Your Cards:</p>
+            <p className="font-semibold text-lg">Accounts</p>
             <Menu as="div" className="relative inline-block text-left">
               <Menu.Button className="flex items-center justify-center text-sm text-primary-main hover:bg-primary-main transition-all hover:text-white py-2 px-4 rounded-md font-semibold border border-primary-main">
                 Manage
@@ -58,7 +69,7 @@ export default function Home() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => open()}
+                          onClick={() => openCardModal()}
                           className={`${
                             active ? 'bg-primary-main text-white' : 'text-gray-500'
                           } group flex w-full items-center transition-all rounded-md px-2 py-2 text-sm`}
@@ -74,7 +85,7 @@ export default function Home() {
             </Menu>
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 bg-white py-4 px-2 shadow-xl rounded-xl">
             {cards?.map((card) => {
               const IconComponent = networkIcons[card.network];
               return (
@@ -89,9 +100,44 @@ export default function Home() {
             })}
           </div>
         </section>
-      </>
 
-      <CreateCard isOpen={isOpen} close={close} />
+        <section className="flex flex-col gap-4 mb-8">
+          <div className="flex justify-between items-center">
+            <p className="font-semibold text-lg">Recent Transactions</p>
+
+            <button
+              onClick={() => openTransactionModal()}
+              className="flex items-center justify-center text-sm text-primary-main hover:bg-primary-main transition-all hover:text-white py-2 px-4 rounded-md font-semibold border border-primary-main"
+            >
+              Add Transaction
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-2 py-4 px-2">
+            {transactions?.map((transaction) => {
+              return (
+                <div
+                  key={transaction.id}
+                  className="grid grid-cols-3 text-gray-500 gap-1 mb-2 bg-white p-2 rounded-xl shadow"
+                >
+                  <p className="col-span-2 font-semibold">{transaction.name}</p>
+                  <p className="col-span-1 justify-self-end text-sm">
+                    - {formatToCurrency(transaction.amount)}
+                  </p>
+                  <p className="col-span-3 text-sm">
+                    {' '}
+                    {format(new Date(transaction.date), 'MMMM dd, yyyy')}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        <CreateCard isOpen={isCardModalOpen} close={closeCardModal} />
+
+        <CreateTransaction isOpen={isTransactionModalOpen} close={closeTransactionModal} />
+      </>
     </>
   );
 }

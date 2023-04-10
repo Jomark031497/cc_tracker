@@ -29,7 +29,7 @@ export default function Login() {
 
       <div className="flex flex-col gap-4">
         <button
-          className="flex-1 flex gap-1 items-center border-2 border-gray-500 w-full justify-center p-2 rounded-xl transition-all"
+          className="flex-1 flex gap-1 items-center text-white bg-gradient-to-r from-red-600 to-yellow-400 w-full justify-center p-2 rounded-xl transition-all"
           onClick={() =>
             signIn('discord', {
               callbackUrl: '/',
