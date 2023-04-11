@@ -16,9 +16,6 @@ module.exports = {
         secondary: {
           main: '#ff8c03',
         },
-        button: {
-          primary: 'bg-gradient-to-r from-red-600 to-yellow-400',
-        },
       },
       fontFamily: {
         sans: ['var(--font-inter)', ...fontFamily.sans],

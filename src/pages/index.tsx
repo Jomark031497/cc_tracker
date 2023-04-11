@@ -7,6 +7,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { IoMdAdd } from 'react-icons/io';
 import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
+import { Button } from '@/components/Elements';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
@@ -35,7 +36,7 @@ export default function Home() {
           <div className="flex justify-between items-center">
             <p className="font-semibold text-lg">Accounts</p>
             <Menu as="div" className="relative inline-block text-left">
-              <Menu.Button className="flex items-center justify-center text-sm text-primary-main hover:bg-primary-main transition-all hover:text-white py-2 px-4 rounded-md font-semibold border border-primary-main">
+              <Menu.Button as={Button} variant="outlined">
                 Manage
               </Menu.Button>
 
@@ -79,12 +80,9 @@ export default function Home() {
         <section className="flex flex-col gap-4 mb-8">
           <div className="flex justify-between items-center">
             <p className="font-semibold text-lg">Recent Transactions</p>
-            <button
-              onClick={() => openTransaction()}
-              className="flex items-center justify-center text-sm text-primary-main hover:bg-primary-main transition-all hover:text-white py-2 px-4 rounded-md font-semibold border border-primary-main"
-            >
+            <Button variant="outlined" onClick={() => openTransaction()}>
               Add Transaction
-            </button>
+            </Button>
           </div>
 
           <div className="flex flex-col gap-2 py-4 px-2">
