@@ -42,7 +42,7 @@ export const Navbar = () => {
                     <button
                       onClick={() => signOut({ callbackUrl: '/login' })}
                       className={`${
-                        active ? 'bg-primary-dark text-white' : 'text-gray-500'
+                        active ? 'bg-primary-light text-white' : 'text-gray-500'
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                     >
                       <FiLogOut className="text-lg mr-1" />
