@@ -1,19 +1,21 @@
 import { UpdateCard } from '@/features/cards';
 import { useModal } from '@/hooks/useModal';
 import { formatToCurrency } from '@/utils/formatToCurrency';
+import { paymentNetworkIcons } from '@/utils/paymentNetworkIcons';
 import { Card as ICard } from '@prisma/client';
 import Link from 'next/link';
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { HiChevronRight } from 'react-icons/hi';
 
 interface Props {
   card: ICard;
-  icon: ReactNode;
 }
 
-export const Card = ({ card, icon }: Props) => {
+export const Card = ({ card }: Props) => {
   const { open, isOpen, close } = useModal();
   const [activeCard, setActiveCard] = useState<ICard | null>(null);
+
+  const IconComponent = paymentNetworkIcons(card.network);
 
   return (
     <Link
@@ -21,7 +23,7 @@ export const Card = ({ card, icon }: Props) => {
       className="px-2 py-2 rounded-xl bg-gradient-to-tr from-red-600 text-white to-orange-500 shadow-xl grid grid-cols-4"
     >
       <div className="flex items-center gap-2 col-span-3">
-        {icon}
+        <IconComponent className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
         <div>
           <p className="font-bold mb-1 text-sm">{card.name}</p>
           <p className="text-sm">

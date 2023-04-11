@@ -7,7 +7,6 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { IoMdAdd } from 'react-icons/io';
 import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
-import { paymentNetworkIcons } from '@/utils/paymentNetworkIcons';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
@@ -71,18 +70,9 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-2 bg-white py-4 px-2 shadow-xl rounded-xl">
-            {cards?.map((card) => {
-              const IconComponent = paymentNetworkIcons(card.network);
-              return (
-                <Card
-                  key={card.id}
-                  card={card}
-                  icon={
-                    <IconComponent className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
-                  }
-                />
-              );
-            })}
+            {cards?.map((card) => (
+              <Card key={card.id} card={card} />
+            ))}
           </div>
         </section>
 
