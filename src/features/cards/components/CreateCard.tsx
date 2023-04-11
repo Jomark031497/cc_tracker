@@ -9,6 +9,7 @@ import {
 import { InputField, Modal, SelectField } from '@/components/Elements';
 import { toast } from 'react-toastify';
 import { queryClient } from '@/lib/queryClient';
+import { cx } from '@/utils/combineClassNames';
 
 interface Props {
   isOpen: boolean;
@@ -74,7 +75,10 @@ export const CreateCard = ({ isOpen, close }: Props) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="p-2 rounded-lg col-span-3 transition-all shadow-xl bg-primary-main text-white font-semibold hover:bg-primary-dark"
+            className={cx(
+              'p-2 rounded-lg col-span-3 transition-all shadow-xl text-white font-semibold hover:bg-primary-dark',
+              isSubmitting ? 'bg-gray-500' : 'bg-primary-main',
+            )}
           >
             Create
           </button>

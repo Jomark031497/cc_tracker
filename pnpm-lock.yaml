@@ -13,7 +13,6 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.57.1
   '@typescript-eslint/parser': ^5.57.1
   autoprefixer: ^10.4.14
-  classnames: ^2.3.2
   date-fns: ^2.29.3
   eslint: ^8.37.0
   eslint-config-next: ^13.2.4
@@ -42,7 +41,6 @@ dependencies:
   '@prisma/client': 4.12.0_prisma@4.12.0
   '@tanstack/react-query': 4.28.0_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query-devtools': 4.29.0_q4teel2yjbizrm4naiaqcdpjum
-  classnames: 2.3.2
   date-fns: 2.29.3
   next: 13.2.4_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.21.1_3tbpwx46tlrk4rci3doelizria
@@ -801,10 +799,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
-
-  /classnames/2.3.2:
-    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
-    dev: false
 
   /client-only/0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}

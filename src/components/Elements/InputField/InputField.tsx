@@ -1,6 +1,6 @@
+import { cx } from '@/utils/combineClassNames';
 import { forwardRef, InputHTMLAttributes } from 'react';
 import { FieldError } from 'react-hook-form';
-import cx from 'classnames';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
