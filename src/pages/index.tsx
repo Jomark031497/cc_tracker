@@ -1,5 +1,3 @@
-import { RiVisaLine, RiMastercardLine } from 'react-icons/ri';
-import { SiJcb, SiAmericanexpress } from 'react-icons/si';
 import Head from 'next/head';
 import { useModal } from '@/hooks/useModal';
 import { Card, CreateCard, useCards } from '@/features/cards';
@@ -11,19 +9,12 @@ import { IoMdAdd } from 'react-icons/io';
 import { CreateTransaction, useTransactions } from '@/features/transactions';
 import { format } from 'date-fns';
 import { formatToCurrency } from '@/utils/formatToCurrency';
+import { paymentNetworkIcons } from '@/utils/paymentNetworkIcons';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
   if (!session) return { redirect: { destination: '/login', permanent: false } };
   return { props: {} };
-};
-
-const networkIcons = {
-  VISA: RiVisaLine,
-  MASTERCARD: RiMastercardLine,
-  JCB: SiJcb,
-  AMERICAN_EXPRESS: SiAmericanexpress,
-  DINERS_CLUB: SiAmericanexpress,
 };
 
 export default function Home() {
@@ -87,7 +78,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-2 bg-white py-4 px-2 shadow-xl rounded-xl">
             {cards?.map((card) => {
-              const IconComponent = networkIcons[card.network];
+              const IconComponent = paymentNetworkIcons(card.network);
               return (
                 <Card
                   key={card.id}

@@ -8,10 +8,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const id = req.query.id as string;
 
-  const card = await prisma.card.findUnique({ where: { id } });
-  if (!card) return res.status(404).json({ message: 'Card not found' });
+  if (req.method === 'GET') {
+    const card = await prisma.card.findUnique({
+      where: { id },
+      include: {
+        transactions: true,
+      },
+    });
+    if (!card) return res.status(404).json({ message: 'Card not found' });
+
+    return res.json(card);
+  }
 
   if (req.method === 'PUT') {
+    const card = await prisma.card.findUnique({ where: { id } });
+    if (!card) return res.status(404).json({ message: 'Card not found' });
+
     const updatedCard = await prisma.card.update({
       data: {
         ...card,

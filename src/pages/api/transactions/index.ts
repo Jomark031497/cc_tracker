@@ -9,12 +9,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'GET') {
     const transactions = await prisma.transaction.findMany({
-      where: {
-        userId: session.user.id,
-      },
+      where: { userId: session.user.id },
     });
 
-    return res.json(transactions);
+    return res.status(200).json(transactions);
   } else if (req.method === 'POST') {
     const data = CreateTransactionSchema.parse(req.body);
 
@@ -38,6 +36,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
     });
 
-    return res.json(transaction);
+    return res.status(200).json(transaction);
   }
 }

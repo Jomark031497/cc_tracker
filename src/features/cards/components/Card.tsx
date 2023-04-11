@@ -42,7 +42,7 @@ export const Card = ({ card, icon }: Props) => {
 
       <div className="col-span-4 text-right justify-self-end">
         <p className="text-xs font-semibold">Outstanding Balance</p>
-        <p className="text- font-bold">{formatToCurrency(card.oustandingBalance)}</p>
+        <p className="text-lg font-bold">{formatToCurrency(card.oustandingBalance)}</p>
       </div>
 
       {activeCard && <UpdateCard card={activeCard} close={close} isOpen={isOpen} />}
