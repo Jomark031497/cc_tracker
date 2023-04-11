@@ -1,26 +1,25 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  IUpdateCardInputs,
-  PAYMENT_NETWORKS,
-  UpdateCardSchema,
-  deleteCardApi,
-  updateCardApi,
-} from '@/features/cards';
-import { Button, InputField, Modal, SelectField } from '@/components/Elements';
+import { Button, InputField, Modal } from '@/components/Elements';
 import { toast } from 'react-toastify';
 import { queryClient } from '@/lib/queryClient';
-import { Card } from '@prisma/client';
+import { Transaction } from '@prisma/client';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import {
+  IUpdateTransactionInputs,
+  UpdateTransactionSchema,
+  updateTransactionApi,
+  deleteTransactionApi,
+} from '@/features/transactions';
 
 interface Props {
   isOpen: boolean;
   close: () => void;
-  card: Card;
+  transaction: Transaction;
 }
 
-export const UpdateCard = ({ isOpen, close, card }: Props) => {
+export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -29,20 +28,20 @@ export const UpdateCard = ({ isOpen, close, card }: Props) => {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
-  } = useForm<IUpdateCardInputs>({
-    resolver: zodResolver(UpdateCardSchema),
-    defaultValues: { ...card },
+  } = useForm<IUpdateTransactionInputs>({
+    resolver: zodResolver(UpdateTransactionSchema),
+    defaultValues: { ...transaction },
   });
 
-  const onSubmit: SubmitHandler<IUpdateCardInputs> = async (values) => {
+  const onSubmit: SubmitHandler<IUpdateTransactionInputs> = async (values) => {
     setIsLoading(true);
     try {
-      await updateCardApi(card.id, values);
-      queryClient.invalidateQueries(['cards']);
-      toast.success('Card updated successfully.');
+      await updateTransactionApi(transaction.id, values);
+      queryClient.invalidateQueries(['transactions']);
+      toast.success('Transaction updated successfully.');
       close();
     } catch (error) {
-      toast.error('Card update failed.');
+      toast.error('Transaction update failed.');
     } finally {
       setIsLoading(false);
     }
@@ -51,13 +50,13 @@ export const UpdateCard = ({ isOpen, close, card }: Props) => {
   const handleDelete = async () => {
     setIsLoading(true);
     try {
-      await deleteCardApi(card.id);
-      queryClient.invalidateQueries(['cards']);
-      toast.success('Card deleted successfully.');
+      await deleteTransactionApi(transaction.id);
+      queryClient.invalidateQueries(['transactions']);
+      toast.success('Transaction deleted successfully.');
       router.push('/');
       close();
     } catch (error) {
-      toast.error('Card delete failed.');
+      toast.error('Transaction delete failed.');
     } finally {
       setIsLoading(false);
     }
@@ -65,35 +64,21 @@ export const UpdateCard = ({ isOpen, close, card }: Props) => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={close} title="Update Card" size="max-w-sm">
+      <Modal isOpen={isOpen} onClose={close} title="Update Transaction" size="max-w-sm">
         <form onSubmit={handleSubmit(onSubmit)} className="p-4 grid grid-cols-3">
           <InputField
-            label="Card Name"
+            label="Transaction Name"
             {...register('name')}
             formError={errors.name}
             className="col-span-3"
           />
-
-          <SelectField
-            label="Payment Network"
-            {...register('network')}
-            formError={errors.network}
-            className="col-span-2"
-          >
-            {PAYMENT_NETWORKS.map((network) => (
-              <option key={network} value={network}>
-                {network}
-              </option>
-            ))}
-          </SelectField>
-
           <InputField
-            label="Credit Limit"
-            {...register('creditLimit', {
+            label="Amount"
+            {...register('amount', {
               valueAsNumber: true,
             })}
-            formError={errors.creditLimit}
-            className="col-span-2"
+            formError={errors.amount}
+            className="col-span-3"
           />
 
           <div className="col-span-3 grid grid-cols-2 gap-1">

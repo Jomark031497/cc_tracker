@@ -1,4 +1,6 @@
-import { useCard } from '@/features/cards';
+import { Button } from '@/components/Elements';
+import { UpdateCard, useCard } from '@/features/cards';
+import { useModal } from '@/hooks/useModal';
 import { formatToCurrency } from '@/utils/formatToCurrency';
 import { paymentNetworkIcons } from '@/utils/paymentNetworkIcons';
 import { format } from 'date-fns';
@@ -8,14 +10,23 @@ export default function Wallet() {
   const router = useRouter();
   const id = router.query.id as string;
 
+  const { open, isOpen, close } = useModal();
+
   const { data: card } = useCard(id);
   if (!card) return <p>...loading</p>;
 
   const IconComponent = paymentNetworkIcons(card.network);
 
   return (
-    <div>
-      <p className="text-lg text-gray-600 font-semibold mb-4">Account Details</p>
+    <>
+      <div className="flex justify-between items-center mb-4">
+        <p className="font-semibold text-gray-500">Account Details</p>
+
+        <Button variant="outlined" onClick={() => open()}>
+          Manage Card
+        </Button>
+      </div>
+
       {card && (
         <div className="px-2 py-2 rounded-xl bg-gradient-to-tr from-red-600 text-white to-orange-500 shadow-xl grid grid-cols-4 mb-4">
           <div className="flex items-center gap-2 col-span-3">
@@ -57,6 +68,8 @@ export default function Wallet() {
           })}
         </div>
       </div>
-    </div>
+
+      <UpdateCard card={card} close={close} isOpen={isOpen} />
+    </>
   );
 }

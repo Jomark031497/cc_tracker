@@ -1,4 +1,4 @@
-import { Transaction } from '@prisma/client';
+import { ITransactionWithCard } from '@/features/transactions';
 
 export async function getTransactionsApi() {
   const response = await fetch('/api/transactions', {
@@ -10,5 +10,5 @@ export async function getTransactionsApi() {
 
   if (!response.ok) throw new Error(JSON.stringify(data));
 
-  return data as Transaction[];
+  return data as ITransactionWithCard[];
 }

@@ -17,9 +17,8 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 };
 
 export default function Home() {
-  const { data: cards } = useCards();
-
-  const { data: transactions } = useTransactions();
+  const { data: cards, isFetching: isCardsFetching } = useCards();
+  const { data: transactions, isFetching: isTransactionsFetching } = useTransactions();
 
   const { close: closeCard, isOpen: isCardOpen, open: openCard } = useModal();
   const { close: closeTransaction, isOpen: isTransactionOpen, open: openTransaction } = useModal();
@@ -36,7 +35,7 @@ export default function Home() {
       <>
         <section className="flex flex-col gap-4 mb-8">
           <div className="flex justify-between items-center">
-            <p className="font-semibold text-lg">Accounts</p>
+            <p className="font-semibold text-gray-500">Accounts</p>
             <DropdownMenu label="Manage">
               <Menu.Item>
                 {({ active }) => (
@@ -56,24 +55,31 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-2 bg-white py-4 px-2 shadow-xl rounded-xl">
-            {cards?.map((card) => (
-              <Card key={card.id} card={card} />
-            ))}
+            {isCardsFetching ? (
+              <p>Loading cards...</p>
+            ) : (
+              cards?.map((card) => <Card key={card.id} card={card} />)
+            )}
           </div>
         </section>
 
         <section className="flex flex-col gap-4 mb-8">
           <div className="flex justify-between items-center">
-            <p className="font-semibold text-lg">Recent Transactions</p>
+            <p className="font-semibold text-gray-500">Recent Transactions</p>
+
             <Button variant="outlined" onClick={() => openTransaction()}>
               Add Transaction
             </Button>
           </div>
 
           <div className="flex flex-col gap-2 py-4 px-2">
-            {transactions?.map((transaction) => (
-              <TransactionCard key={transaction.id} transaction={transaction} />
-            ))}
+            {isTransactionsFetching ? (
+              <p>Loading transactions...</p>
+            ) : (
+              transactions?.map((transaction) => (
+                <TransactionCard key={transaction.id} transaction={transaction} />
+              ))
+            )}
           </div>
         </section>
 

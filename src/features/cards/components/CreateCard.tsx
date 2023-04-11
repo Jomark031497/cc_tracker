@@ -6,7 +6,7 @@ import {
   PAYMENT_NETWORKS,
   createCardApi,
 } from '@/features/cards';
-import { InputField, Modal, SelectField } from '@/components/Elements';
+import { Button, InputField, Modal, SelectField } from '@/components/Elements';
 import { toast } from 'react-toastify';
 import { queryClient } from '@/lib/queryClient';
 import { cx } from '@/utils/combineClassNames';
@@ -72,7 +72,7 @@ export const CreateCard = ({ isOpen, close }: Props) => {
             className="col-span-2"
           />
 
-          <button
+          <Button
             type="submit"
             disabled={isSubmitting}
             className={cx(
@@ -81,7 +81,7 @@ export const CreateCard = ({ isOpen, close }: Props) => {
             )}
           >
             Create
-          </button>
+          </Button>
         </form>
       </Modal>
     </>
