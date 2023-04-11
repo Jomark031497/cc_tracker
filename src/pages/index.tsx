@@ -6,9 +6,7 @@ import { GetServerSidePropsContext } from 'next';
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import { IoMdAdd } from 'react-icons/io';
-import { CreateTransaction, useTransactions } from '@/features/transactions';
-import { format } from 'date-fns';
-import { formatToCurrency } from '@/utils/formatToCurrency';
+import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
 import { paymentNetworkIcons } from '@/utils/paymentNetworkIcons';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
@@ -22,12 +20,8 @@ export default function Home() {
 
   const { data: transactions } = useTransactions();
 
-  const { close: closeCardModal, isOpen: isCardModalOpen, open: openCardModal } = useModal();
-  const {
-    close: closeTransactionModal,
-    isOpen: isTransactionModalOpen,
-    open: openTransactionModal,
-  } = useModal();
+  const { close: closeCard, isOpen: isCardOpen, open: openCard } = useModal();
+  const { close: closeTransaction, isOpen: isTransactionOpen, open: openTransaction } = useModal();
 
   return (
     <>
@@ -60,7 +54,7 @@ export default function Home() {
                     <Menu.Item>
                       {({ active }) => (
                         <button
-                          onClick={() => openCardModal()}
+                          onClick={() => openCard()}
                           className={`${
                             active ? 'bg-primary-main text-white' : 'text-gray-500'
                           } group flex w-full items-center transition-all rounded-md px-2 py-2 text-sm`}
@@ -95,9 +89,8 @@ export default function Home() {
         <section className="flex flex-col gap-4 mb-8">
           <div className="flex justify-between items-center">
             <p className="font-semibold text-lg">Recent Transactions</p>
-
             <button
-              onClick={() => openTransactionModal()}
+              onClick={() => openTransaction()}
               className="flex items-center justify-center text-sm text-primary-main hover:bg-primary-main transition-all hover:text-white py-2 px-4 rounded-md font-semibold border border-primary-main"
             >
               Add Transaction
@@ -105,29 +98,14 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-2 py-4 px-2">
-            {transactions?.map((transaction) => {
-              return (
-                <div
-                  key={transaction.id}
-                  className="grid grid-cols-3 text-gray-500 gap-1 mb-2 bg-white p-2 rounded-xl shadow"
-                >
-                  <p className="col-span-2 font-semibold">{transaction.name}</p>
-                  <p className="col-span-1 justify-self-end text-sm">
-                    - {formatToCurrency(transaction.amount)}
-                  </p>
-                  <p className="col-span-3 text-sm">
-                    {' '}
-                    {format(new Date(transaction.date), 'MMMM dd, yyyy')}
-                  </p>
-                </div>
-              );
-            })}
+            {transactions?.map((transaction) => (
+              <TransactionCard key={transaction.id} transaction={transaction} />
+            ))}
           </div>
         </section>
 
-        <CreateCard isOpen={isCardModalOpen} close={closeCardModal} />
-
-        <CreateTransaction isOpen={isTransactionModalOpen} close={closeTransactionModal} />
+        <CreateCard isOpen={isCardOpen} close={closeCard} />
+        <CreateTransaction isOpen={isTransactionOpen} close={closeTransaction} />
       </>
     </>
   );
