@@ -19,6 +19,7 @@ export const CreateCard = ({ isOpen, close }: Props) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm<ICreateCardInputs>({
     resolver: zodResolver(CreateCardSchema),
@@ -27,6 +28,7 @@ export const CreateCard = ({ isOpen, close }: Props) => {
   const onSubmit: SubmitHandler<ICreateCardInputs> = async (values) => {
     try {
       await createCardApi(values);
+      reset();
       queryClient.invalidateQueries(['cards']);
       toast.success('Card created successfully.');
       close();
@@ -54,13 +56,14 @@ export const CreateCard = ({ isOpen, close }: Props) => {
           >
             {PAYMENT_NETWORKS.map((network) => (
               <option key={network} value={network}>
-                {network}
+                {network.replace('_', ' ')}
               </option>
             ))}
           </SelectField>
 
           <InputField
             label="Credit Limit"
+            defaultValue={0}
             {...register('creditLimit', {
               valueAsNumber: true,
             })}

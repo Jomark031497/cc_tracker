@@ -8,6 +8,7 @@ import { Figtree } from 'next/font/google';
 const figtree = Figtree({
   subsets: ['latin'],
   weight: ['300', '400', '600', '800'],
+  preload: true,
 });
 
 export const RootLayout = ({ children }: { children: ReactNode }) => {
