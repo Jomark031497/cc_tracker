@@ -1,24 +1,15 @@
 import Head from 'next/head';
 import { useModal } from '@/hooks/useModal';
 import { Card, CreateCard, useCards } from '@/features/cards';
-import { getServerAuthSession } from '@/server/auth';
-import { GetServerSidePropsContext } from 'next';
 import { Menu } from '@headlessui/react';
-import { Fragment } from 'react';
 import { IoMdAdd } from 'react-icons/io';
 import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
 import { Button, DropdownMenu } from '@/components/Elements';
 import { cx } from '@/utils/combineClassNames';
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getServerAuthSession(ctx);
-  if (!session) return { redirect: { destination: '/login', permanent: false } };
-  return { props: {} };
-};
-
 export default function Home() {
-  const { data: cards, isFetching: isCardsFetching } = useCards();
-  const { data: transactions, isFetching: isTransactionsFetching } = useTransactions();
+  const { data: cards } = useCards();
+  const { data: transactions } = useTransactions();
 
   const { close: closeCard, isOpen: isCardOpen, open: openCard } = useModal();
   const { close: closeTransaction, isOpen: isTransactionOpen, open: openTransaction } = useModal();
@@ -55,10 +46,10 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-2 bg-white py-4 px-2 shadow-xl rounded-xl">
-            {isCardsFetching ? (
+            {!cards ? (
               <p>Loading cards...</p>
             ) : (
-              cards?.map((card) => <Card key={card.id} card={card} />)
+              cards.map((card) => <Card key={card.id} card={card} />)
             )}
           </div>
         </section>
@@ -73,10 +64,10 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-2 py-4 px-2">
-            {isTransactionsFetching ? (
+            {!transactions ? (
               <p>Loading transactions...</p>
             ) : (
-              transactions?.map((transaction) => (
+              transactions.map((transaction) => (
                 <TransactionCard key={transaction.id} transaction={transaction} />
               ))
             )}

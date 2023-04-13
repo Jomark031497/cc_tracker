@@ -37,7 +37,7 @@ export const UpdateTransaction = ({ isOpen, close, transaction }: Props) => {
     setIsLoading(true);
     try {
       await updateTransactionApi(transaction.id, values);
-      queryClient.invalidateQueries(['transactions']);
+      queryClient.invalidateQueries(['cardTransactions']);
       toast.success('Transaction updated successfully.');
       close();
     } catch (error) {

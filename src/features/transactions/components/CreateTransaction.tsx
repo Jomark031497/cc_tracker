@@ -31,7 +31,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
     try {
       await createTransactionApi(values);
       queryClient.invalidateQueries(['cards']);
-      queryClient.invalidateQueries(['transactions']);
+      queryClient.invalidateQueries(['cardTransactions']);
 
       toast.success('Transaction created successfully.');
       close();
