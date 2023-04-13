@@ -3,7 +3,26 @@ import { UpdateTransaction, useTransaction } from '@/features/transactions';
 import { useModal } from '@/hooks/useModal';
 import { formatToCurrency } from '@/utils/formatToCurrency';
 import { format } from 'date-fns';
+import { GetServerSidePropsContext } from 'next';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { user: session.user },
+  };
+}
 
 export default function TransactionPage() {
   const router = useRouter();

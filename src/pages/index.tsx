@@ -6,6 +6,25 @@ import { IoMdAdd } from 'react-icons/io';
 import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
 import { Button, DropdownMenu } from '@/components/Elements';
 import { cx } from '@/utils/combineClassNames';
+import { getSession } from 'next-auth/react';
+import { GetServerSidePropsContext } from 'next';
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: { user: session.user },
+  };
+}
 
 export default function Home() {
   const { data: cards } = useCards();
