@@ -2,7 +2,7 @@ import { Button } from '@/components/Elements';
 import { getServerAuthSession } from '@/server/auth';
 import { GetServerSidePropsContext } from 'next';
 import { signIn } from 'next-auth/react';
-import { FaDiscord, FaGoogle } from 'react-icons/fa';
+import { FaDiscord } from 'react-icons/fa';
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerAuthSession(ctx);
@@ -38,7 +38,7 @@ export default function Login() {
           <FaDiscord className="text-2xl" />
           Login with Discord
         </Button>
-        <Button
+        {/* <Button
           className="flex w-full flex-1 items-center justify-center gap-1"
           onClick={() =>
             signIn('discord', {
@@ -48,7 +48,7 @@ export default function Login() {
         >
           <FaGoogle className="text-2xl" />
           Login with Google
-        </Button>
+        </Button> */}
       </div>
     </>
   );
