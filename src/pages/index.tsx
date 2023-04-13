@@ -8,6 +8,7 @@ import { Button, DropdownMenu } from '@/components/Elements';
 import { cx } from '@/utils/combineClassNames';
 import { getSession } from 'next-auth/react';
 import { GetServerSidePropsContext } from 'next';
+import { motion } from 'framer-motion';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
@@ -68,7 +69,16 @@ export default function Home() {
             {!cards ? (
               <p>Loading cards...</p>
             ) : (
-              cards.map((card) => <Card key={card.id} card={card} />)
+              cards.map((card, index) => (
+                <motion.div
+                  key={card.id}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Card card={card} />
+                </motion.div>
+              ))
             )}
           </div>
         </section>
@@ -86,8 +96,15 @@ export default function Home() {
             {!transactions ? (
               <p>Loading transactions...</p>
             ) : (
-              transactions.map((transaction) => (
-                <TransactionCard key={transaction.id} transaction={transaction} />
+              transactions.map((transaction, index) => (
+                <motion.div
+                  key={transaction.id}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <TransactionCard transaction={transaction} />
+                </motion.div>
               ))
             )}
           </div>
