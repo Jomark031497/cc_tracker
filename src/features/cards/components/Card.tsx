@@ -14,23 +14,23 @@ export const Card = ({ card }: Props) => {
   return (
     <Link
       href={`/cards/${card.id}`}
-      className="px-2 py-2 rounded-xl bg-gradient-to-tr from-red-600 text-white to-orange-500 shadow-xl grid grid-cols-4"
+      className="grid grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 px-2 py-2 text-white shadow-xl"
     >
-      <div className="flex items-center gap-2 col-span-3">
-        <IconComponent className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
+      <div className="col-span-3 flex items-center gap-2">
+        <IconComponent className="rounded-full border border-gray-500 bg-white p-1 text-4xl text-black" />
         <div>
-          <p className="font-bold mb-1 text-sm">{card.name}</p>
+          <p className="mb-1 text-sm font-bold">{card.name}</p>
           <p className="text-sm">
             Available Credit: <strong>{formatToCurrency(card.creditLimit)}</strong>
           </p>
         </div>
       </div>
 
-      <button className="col-span-1 text-lg justify-self-end self-start p-1 bg-black/50 rounded-full transition-all hover:bg-black/30">
+      <button className="col-span-1 self-start justify-self-end rounded-full bg-black/50 p-1 text-lg transition-all hover:bg-black/30">
         <HiChevronRight />
       </button>
 
-      <div className="col-span-4 text-right justify-self-end">
+      <div className="col-span-4 justify-self-end text-right">
         <p className="text-xs font-semibold">Outstanding Balance</p>
         <p className="text-lg font-bold">{formatToCurrency(card.oustandingBalance)}</p>
       </div>

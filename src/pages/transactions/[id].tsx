@@ -35,7 +35,7 @@ export default function TransactionPage() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <p className="font-semibold text-gray-500">Account Details</p>
 
         <Button variant="outlined" onClick={() => open()}>
@@ -47,9 +47,9 @@ export default function TransactionPage() {
         <p>Loading transaction...</p>
       ) : (
         <>
-          <div className="bg-white rounded-xl shadow">
-            <div className="bg-gradient-to-tr from-red-600 to-orange-500 p-2 text-white rounded-t-xl">
-              <p className="text-xs font-semibold mb-1">Transaction Date</p>
+          <div className="rounded-xl bg-white shadow">
+            <div className="rounded-t-xl bg-gradient-to-tr from-red-600 to-orange-500 p-2 text-white">
+              <p className="mb-1 text-xs font-semibold">Transaction Date</p>
               <p className="text-sm font-semibold">
                 {format(new Date(transaction.date), 'MMMM dd, yyyy')}
               </p>
@@ -57,11 +57,11 @@ export default function TransactionPage() {
 
             <div className="p-2">
               <div className="grid grid-cols-4 border-b border-dashed p-2">
-                <p className="text-sm text-gray-500 col-span-1">Description</p>
+                <p className="col-span-1 text-sm text-gray-500">Description</p>
                 <p className="col-span-3">{transaction.name}</p>
               </div>
               <div className="grid grid-cols-4 p-2">
-                <p className="text-sm text-gray-500 col-span-1">Amount</p>
+                <p className="col-span-1 text-sm text-gray-500">Amount</p>
                 <p className="col-span-3">{formatToCurrency(transaction.amount)}</p>
               </div>
             </div>

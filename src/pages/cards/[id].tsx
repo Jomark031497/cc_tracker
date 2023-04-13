@@ -38,7 +38,7 @@ export default function Wallet() {
 
   return (
     <>
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <p className="font-semibold text-gray-500">Account Details</p>
 
         <Button variant="outlined" onClick={() => open()}>
@@ -47,18 +47,18 @@ export default function Wallet() {
       </div>
 
       {card && (
-        <div className="px-2 py-2 rounded-xl bg-gradient-to-tr from-red-600 text-white to-orange-500 shadow-xl grid grid-cols-4 mb-4">
-          <div className="flex items-center gap-2 col-span-3">
-            <IconComponent className="border bg-white text-black border-gray-500 text-4xl rounded-full p-1" />
+        <div className="mb-4 grid grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 px-2 py-2 text-white shadow-xl">
+          <div className="col-span-3 flex items-center gap-2">
+            <IconComponent className="rounded-full border border-gray-500 bg-white p-1 text-4xl text-black" />
             <div>
-              <p className="font-bold mb-1">{card.name}</p>
+              <p className="mb-1 font-bold">{card.name}</p>
               <p className="text-sm">
                 Available Credit: <strong>{formatToCurrency(card.creditLimit)}</strong>
               </p>
             </div>
           </div>
 
-          <div className="col-span-4 text-right justify-self-end">
+          <div className="col-span-4 justify-self-end text-right">
             <p className="text-sm font-semibold">Outstanding Balance</p>
             <p className="font-bold">{formatToCurrency(card.oustandingBalance)}</p>
           </div>
@@ -66,14 +66,14 @@ export default function Wallet() {
       )}
 
       <div>
-        <p className="text-lg text-gray-600 font-semibold mb-4">Transactions</p>
+        <p className="mb-4 text-lg font-semibold text-gray-600">Transactions</p>
 
         <div className="flex flex-col gap-2 px-2">
           {card.transactions?.map((transaction) => {
             return (
               <div
                 key={transaction.id}
-                className="grid grid-cols-3 text-gray-500 gap-1 mb-2 bg-white p-2 rounded-xl shadow"
+                className="mb-2 grid grid-cols-3 gap-1 rounded-xl bg-white p-2 text-gray-500 shadow"
               >
                 <p className="col-span-2 font-semibold">{transaction.name}</p>
                 <p className="col-span-1 justify-self-end text-sm">

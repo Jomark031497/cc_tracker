@@ -9,8 +9,8 @@ export const Navbar = () => {
   const { data: sessionData } = useSession();
 
   return (
-    <header className="bg-gray-200 py-2 px-4 h-[70px] flex items-center justify-between">
-      <Link href="/" className="text-primary-main font-bold text-2xl hover:text-primary-dark">
+    <header className="flex h-[70px] items-center justify-between bg-gray-200 px-4 py-2">
+      <Link href="/" className="text-2xl font-bold text-primary-main hover:text-primary-dark">
         CC
       </Link>
 
@@ -45,7 +45,7 @@ export const Navbar = () => {
                         active ? 'bg-primary-light text-white' : 'text-gray-500'
                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                     >
-                      <FiLogOut className="text-lg mr-1" />
+                      <FiLogOut className="mr-1 text-lg" />
                       Logout
                     </button>
                   )}

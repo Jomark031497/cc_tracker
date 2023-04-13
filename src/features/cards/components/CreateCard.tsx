@@ -76,7 +76,7 @@ export const CreateCard = ({ isOpen, close }: Props) => {
             type="submit"
             disabled={isSubmitting}
             className={cx(
-              'p-2 rounded-lg col-span-3 transition-all shadow-xl text-white font-semibold hover:bg-primary-dark',
+              'col-span-3 rounded-lg p-2 font-semibold text-white shadow-xl transition-all hover:bg-primary-dark',
               isSubmitting ? 'bg-gray-500' : 'bg-primary-main',
             )}
           >

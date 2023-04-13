@@ -14,10 +14,10 @@ export const Button = forwardRef<HTMLButtonElement, Props>(
         ref={ref}
         {...rest}
         className={cx(
-          'py-2 rounded-lg px-6 transition-all text-sm font-semibold',
+          'rounded-full px-6 py-2 text-sm font-semibold transition-all',
           variant === 'contained'
-            ? 'bg-primary-main text-white font-semibold hover:bg-primary-light'
-            : 'border border-primary-main text-primary-main hover:bg-primary-light hover:text-white hover:border-primary-light',
+            ? 'bg-primary-main font-semibold text-white hover:bg-primary-light'
+            : 'border border-primary-main text-primary-main hover:border-primary-main hover:bg-primary-main hover:text-white',
           className,
         )}
       >

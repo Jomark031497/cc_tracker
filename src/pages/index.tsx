@@ -9,6 +9,7 @@ import { cx } from '@/utils/combineClassNames';
 import { getSession } from 'next-auth/react';
 import { GetServerSidePropsContext } from 'next';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
@@ -44,8 +45,8 @@ export default function Home() {
       </Head>
 
       <>
-        <section className="flex flex-col gap-4 mb-8">
-          <div className="flex justify-between items-center">
+        <section className="mb-8 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
             <p className="font-semibold text-gray-500">Accounts</p>
             <DropdownMenu label="Manage">
               <Menu.Item>
@@ -53,11 +54,11 @@ export default function Home() {
                   <button
                     onClick={() => openCard()}
                     className={cx(
-                      'flex w-full items-center transition-all rounded-md px-2 py-2 text-sm',
+                      'flex w-full items-center rounded-md px-2 py-2 text-sm transition-all',
                       active ? 'bg-primary-main text-white' : 'text-gray-500',
                     )}
                   >
-                    <IoMdAdd className="text-lg mr-1" />
+                    <IoMdAdd className="mr-1 text-lg" />
                     Add Card
                   </button>
                 )}
@@ -65,10 +66,8 @@ export default function Home() {
             </DropdownMenu>
           </div>
 
-          <div className="flex flex-col gap-2 bg-white py-4 px-2 shadow-xl rounded-xl">
-            {!cards ? (
-              <p>Loading cards...</p>
-            ) : (
+          <div className="flex flex-col gap-2 rounded-xl bg-white px-2 py-4 shadow-xl">
+            {cards && cards.length ? (
               cards.map((card, index) => (
                 <motion.div
                   key={card.id}
@@ -79,23 +78,33 @@ export default function Home() {
                   <Card card={card} />
                 </motion.div>
               ))
+            ) : (
+              <div className="text-center">
+                <p className="mb-4 text-xs text-gray-500">You have no cards yet.</p>
+                <Button onClick={openCard}>Add Card</Button>
+              </div>
             )}
           </div>
         </section>
 
-        <section className="flex flex-col gap-4 mb-8">
-          <div className="flex justify-between items-center">
+        <section className="mb-8 flex flex-col gap-4">
+          <div className="flex items-center justify-between">
             <p className="font-semibold text-gray-500">Recent Transactions</p>
 
-            <Button variant="outlined" onClick={() => openTransaction()}>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                if (!cards?.length)
+                  return toast.error('No card found. You have to create a card first.');
+                openTransaction();
+              }}
+            >
               Add Transaction
             </Button>
           </div>
 
-          <div className="flex flex-col gap-2 py-4 px-2">
-            {!transactions ? (
-              <p>Loading transactions...</p>
-            ) : (
+          <div className="flex flex-col gap-2 px-2 py-4">
+            {transactions && transactions.length ? (
               transactions.map((transaction, index) => (
                 <motion.div
                   key={transaction.id}
@@ -106,6 +115,12 @@ export default function Home() {
                   <TransactionCard transaction={transaction} />
                 </motion.div>
               ))
+            ) : (
+              <div className="">
+                <p className="mb-4 p-2 text-center text-xs text-gray-500">
+                  You have no transactions yet.
+                </p>
+              </div>
             )}
           </div>
         </section>

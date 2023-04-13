@@ -11,7 +11,7 @@ export const TransactionCard = ({ transaction }: Props) => {
   return (
     <Link
       href={`/transactions/${transaction.id}`}
-      className="grid grid-cols-3 text-gray-500 gap-1 mb-2 bg-white p-2 rounded-xl shadow"
+      className="mb-2 grid grid-cols-3 gap-1 rounded-xl bg-white p-2 text-gray-500 shadow"
     >
       <p className="col-span-2 font-semibold">{transaction.name}</p>
       <p className="col-span-1 justify-self-end text-sm">

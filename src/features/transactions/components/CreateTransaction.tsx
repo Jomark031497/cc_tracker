@@ -70,7 +70,7 @@ export const CreateTransaction = ({ isOpen, close }: Props) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="p-2 rounded-lg col-span-3 transition-all shadow-xl bg-primary-main text-white font-semibold hover:bg-primary-dark"
+            className="col-span-3 rounded-lg bg-primary-main p-2 font-semibold text-white shadow-xl transition-all hover:bg-primary-dark"
           >
             Create
           </button>

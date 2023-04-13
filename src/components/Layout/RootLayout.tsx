@@ -9,13 +9,13 @@ export const RootLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <>
-      <div className={`min-h-screen mx-auto max-w-md bg-gray-50`}>
+      <div className={`mx-auto min-h-screen max-w-md bg-gray-50`}>
         {sessionData && <Navbar />}
         <main className={`px-4 pt-4`}>{children}</main>
       </div>
       <ToastContainer
         position="bottom-center"
-        autoClose={5000}
+        autoClose={3000}
         hideProgressBar={false}
         newestOnTop
         closeOnClick
@@ -23,6 +23,7 @@ export const RootLayout = ({ children }: { children: ReactNode }) => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        theme="colored"
       />
     </>
   );

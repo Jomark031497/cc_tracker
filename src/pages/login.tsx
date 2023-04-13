@@ -24,11 +24,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
 export default function Login() {
   return (
     <>
-      <h1 className="text-2xl font-semibold text-center mb-4">Purchase Tracker</h1>
-      <h2 className="text-lg mb-4">Login Methods:</h2>
+      <h1 className="mb-4 text-center text-2xl font-semibold">Purchase Tracker</h1>
+      <h2 className="mb-4 text-lg">Login Methods:</h2>
       <div className="flex flex-col gap-4">
         <Button
-          className="flex-1 flex gap-1 items-center w-full justify-center"
+          className="flex w-full flex-1 items-center justify-center gap-1"
           onClick={() =>
             signIn('discord', {
               callbackUrl: '/',
@@ -39,7 +39,7 @@ export default function Login() {
           Login with Discord
         </Button>
         <Button
-          className="flex-1 flex gap-1 items-center w-full justify-center"
+          className="flex w-full flex-1 items-center justify-center gap-1"
           onClick={() =>
             signIn('discord', {
               callbackUrl: '/',
