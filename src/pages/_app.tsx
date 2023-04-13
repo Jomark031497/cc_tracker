@@ -9,14 +9,14 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <SessionProvider session={pageProps.session}>
-        <QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
+        <SessionProvider session={pageProps.session}>
           <RootLayout>
             <Component {...pageProps} />
           </RootLayout>
           <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </SessionProvider>
+        </SessionProvider>
+      </QueryClientProvider>
     </>
   );
 }
