@@ -3,3 +3,4 @@ export * from './InputField';
 export * from './SelectField';
 export * from './Button';
 export * from './DropdownMenu';
+export * from './CardSkeleton';

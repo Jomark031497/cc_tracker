@@ -14,7 +14,7 @@ export const Card = ({ card }: Props) => {
   return (
     <Link
       href={`/cards/${card.id}`}
-      className="grid grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 px-2 py-2 text-white shadow-xl"
+      className="grid h-28 grid-cols-4 rounded-xl bg-gradient-to-tr from-red-600 to-orange-500 px-2 py-2 text-white shadow-xl"
     >
       <div className="col-span-3 flex items-center gap-2">
         <IconComponent className="rounded-full border border-gray-500 bg-white p-1 text-4xl text-black" />

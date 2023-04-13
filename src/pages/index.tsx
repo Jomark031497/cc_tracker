@@ -4,7 +4,7 @@ import { Card, CreateCard, useCards } from '@/features/cards';
 import { Menu } from '@headlessui/react';
 import { IoMdAdd } from 'react-icons/io';
 import { CreateTransaction, TransactionCard, useTransactions } from '@/features/transactions';
-import { Button, DropdownMenu } from '@/components/Elements';
+import { Button, CardSkeleton, DropdownMenu } from '@/components/Elements';
 import { cx } from '@/utils/combineClassNames';
 import { getSession } from 'next-auth/react';
 import { GetServerSidePropsContext } from 'next';
@@ -29,8 +29,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 }
 
 export default function Home() {
-  const { data: cards } = useCards();
-  const { data: transactions } = useTransactions();
+  const { data: cards, isLoading: isCardsLoading } = useCards();
+  const { data: transactions, isLoading: isTransactionsLoading } = useTransactions();
 
   const { close: closeCard, isOpen: isCardOpen, open: openCard } = useModal();
   const { close: closeTransaction, isOpen: isTransactionOpen, open: openTransaction } = useModal();
@@ -67,22 +67,26 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-2 rounded-xl bg-white px-2 py-4 shadow-xl">
-            {cards && cards.length ? (
-              cards.map((card, index) => (
-                <motion.div
-                  key={card.id}
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card card={card} />
-                </motion.div>
-              ))
+            {!isCardsLoading ? (
+              cards && cards.length ? (
+                cards.map((card, index) => (
+                  <motion.div
+                    key={card.id}
+                    initial={{ opacity: 0, x: -50 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card card={card} />
+                  </motion.div>
+                ))
+              ) : (
+                <div className="text-center">
+                  <p className="mb-4 text-xs text-gray-500">You have no cards yet.</p>
+                  <Button onClick={openCard}>Add Card</Button>
+                </div>
+              )
             ) : (
-              <div className="text-center">
-                <p className="mb-4 text-xs text-gray-500">You have no cards yet.</p>
-                <Button onClick={openCard}>Add Card</Button>
-              </div>
+              <CardSkeleton />
             )}
           </div>
         </section>
@@ -104,23 +108,31 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col gap-2 px-2 py-4">
-            {transactions && transactions.length ? (
-              transactions.map((transaction, index) => (
-                <motion.div
-                  key={transaction.id}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <TransactionCard transaction={transaction} />
-                </motion.div>
-              ))
+            {!isTransactionsLoading ? (
+              transactions?.length ? (
+                transactions?.map((transaction, index) => (
+                  <motion.div
+                    key={transaction.id}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <TransactionCard transaction={transaction} />
+                  </motion.div>
+                ))
+              ) : (
+                <div>
+                  <p className="mb-4 p-2 text-center text-xs text-gray-500">
+                    You have no transactions yet.
+                  </p>
+                </div>
+              )
             ) : (
-              <div className="">
-                <p className="mb-4 p-2 text-center text-xs text-gray-500">
-                  You have no transactions yet.
-                </p>
-              </div>
+              <>
+                <CardSkeleton />
+                <CardSkeleton />
+                <CardSkeleton />
+              </>
             )}
           </div>
         </section>

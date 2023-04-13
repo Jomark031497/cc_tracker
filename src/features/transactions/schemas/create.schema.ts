@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const CreateTransactionSchema = z.object({
   name: z.string().min(1).max(255),
-  amount: z.number().nonnegative(),
+  amount: z.number(),
   date: z.date().optional(),
   imageUrl: z.string().url().nullish(),
   cardId: z.string().cuid(),
